@@ -6,7 +6,7 @@
 __pycache__
 backend-media/
 backend-static/
-staticfiles/
+/staticfiles
 backend-static-deploy/
 db.sqlite3
 */migrations
