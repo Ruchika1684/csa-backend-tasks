@@ -2,6 +2,7 @@
 .vscode
 *.pyc
 *~
+*.xml
 /venv
 __pycache__
 backend-media/
