@@ -2,7 +2,7 @@
 {% load socialaccount %}
 {% block content %}
     {% if audio %}
-        <div id="play"><audio src="{{ audio.url }}" controls="controls">
+        <div id="play"><audio src="{{ audio.url }}" controls="controls" autoplay>
         </audio></div>
         <div  class="content-section" style="alignment: right;">
             <h3>Lyrics</h3>

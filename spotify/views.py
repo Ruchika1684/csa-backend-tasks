@@ -1,8 +1,9 @@
 import os
-
+from pathlib import Path
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render,redirect
+from django.conf import settings
 from django.views.generic import DetailView, CreateView, DeleteView,ListView,UpdateView
 from .models import *
 from rest_framework.views import APIView
@@ -29,11 +30,6 @@ class SongDetails(APIView,LoginRequiredMixin):
         liked = False
         if Like.objects.filter(song = song,liked_by=self.request.user).exists():
             liked = True
-        path = f"C:/Users/shoor/PycharmProjects/spotify_clone/songdir/{song.lyrics}"
-        with open(path) as f:
-            lines = []
-            for line in f:
-                lines.append(line)
         return  render(request,template_name="spotify/song.html",context={"song":song,"liked":liked})
 
     def post(self,request,pk):
@@ -58,8 +54,8 @@ class SongDetails(APIView,LoginRequiredMixin):
             song.times_played += 1
             song.save()
             messages.info(request, "Song is being played")
-            path = f"C:/Users/shoor/PycharmProjects/spotify_clone/songdir/{song.lyrics}"
-            with open(path) as f:
+            p = Path(settings.MEDIA_ROOT  + "/" + song.lyrics.url)
+            with open(p) as f:
                 lines = []
                 for line in f:
                     lines.append(line)
@@ -70,6 +66,9 @@ class UserPlaylistListView(ListView,LoginRequiredMixin):
         model = Playlist
         template_name = 'spotify/playlists.html'
         context_object_name = 'playlists'
+        def get_queryset(self):
+            return self.model.objects.filter(user = self.request.user)
+        
 
 
 class UserPlaylistCreateView(CreateView):
